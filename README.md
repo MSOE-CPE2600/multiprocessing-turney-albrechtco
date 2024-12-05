@@ -26,3 +26,36 @@ From the runtime analysis:
 - **20 Processes**: Diminishing returns are evident due to the overhead of managing a large number of child processes and potential system limitations (e.g., CPU and I/O bottlenecks).
 
 This analysis demonstrates the trade-off between parallelism and system resource management, highlighting the importance of balancing the number of processes for optimal performance.
+
+# System Programming Lab 12 Multithreading
+
+## Overview of Implementation
+
+This project extends the `mandelmovie` program by incorporating multithreading in addition to multiprocessing. The number of threads used per process is configurable via a command-line argument. Multithreading further optimizes the runtime by dividing the workload of each process among multiple threads.
+
+The key components of the implementation include:
+- Using the `fork()` system call to create child processes.
+- Dividing the frames assigned to each process among multiple threads.
+- Using `pthread` for thread creation and synchronization within each process.
+- Combining the benefits of multiprocessing and multithreading to minimize runtime.
+
+## Runtime Results
+
+The graph below illustrates the runtime of the program with varying numbers of processes and threads. The data shows how runtime decreases as the number of threads and processes increases, up to a point where additional threads or processes provide diminishing returns due to system overhead.
+
+![Threads vs Processes](threads_vs_processes.png)
+
+## Discussion of Results
+
+From the runtime analysis:
+- **Sweet Spot**: The optimal runtime was achieved with 10 processes and 4 threads per process. This configuration balanced the workload effectively across system resources.
+- **Impact of Multithreading vs Multiprocessing**: Both techniques significantly reduced runtime. However, multiprocessing had a more noticeable impact initially, as it allowed independent execution of processes. Multithreading further optimized runtime within each process by leveraging multiple CPU cores more effectively.
+- **Diminishing Returns**: Beyond 10 processes and 4 threads, the runtime improvements slowed due to increased overhead from managing a large number of processes and threads.
+
+### Questions
+
+i. **Which technique seemed to impact runtime more – multithreading or multiprocessing? Why do you think that is?**
+   - Multiprocessing had a greater initial impact on runtime since it allowed independent execution of processes on separate cores. Multithreading complemented this by optimizing resource utilization within each process.
+
+ii. **Was there a “sweet spot” where optimal (minimal) runtime was achieved?**
+   - Yes, the sweet spot was at 10 processes and 4 threads per process, where the runtime was minimal, balancing system resources effectively.
